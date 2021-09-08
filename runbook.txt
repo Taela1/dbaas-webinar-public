@@ -1,0 +1,55 @@
+## Linux setup
+
+ssh $linuxonexo (Debian)
+su -
+wget https://github.com/exoscale/cli/releases/download/v1.40.5/exoscale-cli_1.40.5_linux_amd64.deb
+dpkg -i exoscale-cli_1.40.5_linux_amd64.deb
+exo config
+
+apt install kubernetes-client
+mkdir ~/.kube
+
+### Demo from here ###
+
+## Terraform setup
+
+wget https://releases.hashicorp.com/terraform/1.0.5/terraform_1.0.5_linux_amd64.zip
+unzip terraform_1.0.5_linux_amd64.zip
+chmod +x terraform
+mv terraform /bin/
+terraform
+
+## Clone github repo
+
+git clone https://github.com/Taela1/dbaas-webinar-public/
+cd dbaas-webinar-public
+
+## deploy terraform
+exo firewall list #only default SG
+exo lab database list #no DB services
+exo sks list #no sks
+exo sks nodepool list #no nodepool
+
+terraform init
+terraform validate
+terraform apply 
+
+exo firewall list #SG created
+exo sks list #SKS master visible
+exo sks nodepool list #nodepool is there
+exo lab database list #DB is there
+
+exo sks kubeconfig dbaas-webinar-prod admin -g system:masters -t $((86400 * 7)) > $HOME/.kube/config
+kubectl get nodes
+
+apt install postgresql-client-13
+exo lab database show dbaas-webinar-prod -u #get $URI
+psql $URI
+\l
+exit
+
+change standard.small -> standard.large
+count to 5
+plan to business-8
+termination_protection -> true 
+
