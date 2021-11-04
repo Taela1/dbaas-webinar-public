@@ -13,7 +13,7 @@ terraform {
   required_providers {
     exoscale = {
       source  = "exoscale/exoscale"
-      version = "0.28.0"
+      version = "~>0.28.0"
     }
   }
 }
@@ -56,7 +56,7 @@ resource "exoscale_security_group_rules" "sks" {
 resource "exoscale_sks_cluster" "prod" {
   zone    = local.zone
   name    = "${var.project}-prod"
-  version = "1.22.1"
+  #version = "1.22.1" ## use latest
 }
 
 output "sks_endpoint" {
