@@ -67,8 +67,8 @@ resource "exoscale_sks_nodepool" "nodepool" {
   zone               = local.zone
   cluster_id         = exoscale_sks_cluster.prod.id
   name               = "${var.project}-nodepool"
-  instance_type      = "standard.small"
-  size               = 2
+  instance_type      = "standard.large"
+  size               = 5
   security_group_ids = [exoscale_security_group.sks.id]
 }
 
@@ -76,7 +76,7 @@ resource "exoscale_database" "pgprod" {
   zone = local.zone
   name = "${var.project}-prod"
   type = "pg"
-  plan = "startup-4"
+  plan = "business-8"
 
   maintenance_dow  = "sunday"
   maintenance_time = "23:00:00"
